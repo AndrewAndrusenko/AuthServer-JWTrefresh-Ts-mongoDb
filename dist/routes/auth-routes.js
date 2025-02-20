@@ -50,9 +50,7 @@ exports.router.post('/logout', async function (req, res, next) {
 exports.router.post('/', async function (req, res, next) {
     authModule.signUpNewUser(req, res, next);
 });
-exports.router.get('/refresh', jwt_module_1.refreshTokenFn, (req, res, next) => {
-    res.send({ msg: 'Token has been refreshed' });
-});
+exports.router.get('/refresh', jwt_module_1.refreshTokenFn);
 /* Update user data. */
 exports.router.post('/update', async function (req, res, next) {
     authModule.updateUserData(req, res, next);

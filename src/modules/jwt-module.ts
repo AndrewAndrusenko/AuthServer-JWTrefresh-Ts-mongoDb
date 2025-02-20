@@ -89,7 +89,7 @@ function verifyJWT (accessToken:string, res:Response,next:NextFunction,url:strin
   ).subscribe(()=>next())
 }
 
-export function refreshTokenFn (req:Request, res:Response, next:NextFunction ) {
+export function refreshTokenFn (req:Request, res:Response ) {
   let refreshToken = String(JSONCookies(req.cookies)['A3_RefreshToken'])
   const boundJwtVerify = bindNodeCallback (verify)
   boundJwtVerify(refreshToken,ENVIRONMENT.JWT.JWT_REFRESH_SECRET).pipe( 
@@ -114,7 +114,7 @@ export function refreshTokenFn (req:Request, res:Response, next:NextFunction ) {
       res.status(SERVER_ERRORS.get('AUTHENTICATION_FAILED')!.code).send(`${err?.name} : ${err.message}`)
       return EMPTY;
     })
-  ).subscribe (()=>next())
+  ).subscribe (data=>res.send(data.jwtInfoToken.jwtInfo))
 }
 export function saveRefreshToStore (jwtInfoToken:IJWTInfoToken ):Observable<IJWTInfoToken> {
     return redisStore.saveRefresh(jwtInfoToken).pipe (

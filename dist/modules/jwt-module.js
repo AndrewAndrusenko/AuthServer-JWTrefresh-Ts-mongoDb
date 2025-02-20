@@ -95,7 +95,7 @@ function verifyJWT(accessToken, res, next, url) {
         return rxjs_1.EMPTY;
     })).subscribe(() => next());
 }
-function refreshTokenFn(req, res, next) {
+function refreshTokenFn(req, res) {
     let refreshToken = String((0, cookie_parser_1.JSONCookies)(req.cookies)['A3_RefreshToken']);
     const boundJwtVerify = (0, rxjs_1.bindNodeCallback)(jsonwebtoken_1.verify);
     boundJwtVerify(refreshToken, environment_1.ENVIRONMENT.JWT.JWT_REFRESH_SECRET).pipe((0, rxjs_1.switchMap)(jwtInfo => exports.redisStore.getRefreshToken(jwtInfo.userId)
@@ -112,7 +112,7 @@ function refreshTokenFn(req, res, next) {
     }), (0, rxjs_1.catchError)(e => { return (0, rxjs_1.throwError)(() => e); }))), (0, rxjs_1.tap)(jwtInfo => localLogger.info({ fn: 'refreshTokenFunc', msg: 'New token is issued', user: jwtInfo.userId })), (0, rxjs_1.switchMap)(jwtInfo => jwtSetAccessToken({ _id: jwtInfo._id, userId: jwtInfo.userId, role: jwtInfo.role })), (0, rxjs_1.tap)(jwtInfoToken => res = setCookiesJWT_Tokens(res, jwtInfoToken.jwt)), (0, rxjs_1.switchMap)(jwtInfoToken => (0, rxjs_1.of)({ response: res, jwtInfoToken: jwtInfoToken })), (0, rxjs_1.catchError)(err => {
         res.status(errors_model_1.SERVER_ERRORS.get('AUTHENTICATION_FAILED').code).send(`${err?.name} : ${err.message}`);
         return rxjs_1.EMPTY;
-    })).subscribe(() => next());
+    })).subscribe(data => res.send(data.jwtInfoToken.jwtInfo));
 }
 function saveRefreshToStore(jwtInfoToken) {
     return exports.redisStore.saveRefresh(jwtInfoToken).pipe((0, rxjs_1.catchError)(err => {

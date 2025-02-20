@@ -17,9 +17,7 @@ router.post('/', async function(req, res, next) {
   authModule.signUpNewUser(req,res,next)
 
 });
-router.get('/refresh',refreshTokenFn, (req, res, next) => {
-    res.send({msg:'Token has been refreshed'})  
-});
+router.get('/refresh',refreshTokenFn);
 /* Update user data. */
 router.post('/update', async function(req, res, next) {
   authModule.updateUserData(req, res, next)
