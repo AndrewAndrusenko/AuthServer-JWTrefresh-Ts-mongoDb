@@ -34,5 +34,5 @@ export const serializeOptions:SerializeOptions = {
   sameSite:'strict',
   maxAge:60*60*24*30,
   path:'/',
-  domain:'euw.devtunnels.ms'
+  ...(process.env.NODE_ENV === 'production' && { domain:process.env.COOKIE_DOMAIN})
 }

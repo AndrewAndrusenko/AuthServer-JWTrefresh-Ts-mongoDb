@@ -1,9 +1,12 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
+# Environments
+.env
 # Compiled output
 /tmp
 /out-tsc
 /bazel-out
-
+#logs
+*.log
 # Node
 /node_modules
 npm-debug.log
@@ -38,7 +41,7 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-dist/mongo-db/mongoPG
+dist/
 src/environment/environment.ts
 dist/environment/environment.js
 dist/environment/environment.js

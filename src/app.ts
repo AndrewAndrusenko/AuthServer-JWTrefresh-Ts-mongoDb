@@ -25,7 +25,15 @@ app.use(loggerDev('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors(({credentials: true, origin: ENVIRONMENT.CORS.ORIGINS})))
+//console.log('process.env.COOKIE_DOMAIN ',process.env.COOKIE_DOMAIN  )
+const cookieDomain = (process.env.COOKIE_DOMAIN || '.euw.devtunnels.ms').replace(/\./g, '\\.');
+app.use(cors(({
+    credentials: true, 
+    origin:[
+        /^http:\/\/localhost(:\d+)?$/,
+         new RegExp(`${cookieDomain}$`)
+    ]
+})))
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter.router);

@@ -1,12 +1,11 @@
 import { HttpError } from 'http-errors';
-import {ENVIRONMENT} from '../environment/environment';
+import 'dotenv/config'
 import {app} from '../app';
 import Debug from 'debug'
 import * as http from 'http';
-process.env.PORT = ENVIRONMENT.REST_PORT.toString()
 
 var debug = Debug('server-mongodb-rest-http:server')
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.SERVER_PORT || '3000');
 app.set('port', port);
 var server = http.createServer(app);
 
@@ -48,5 +47,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr?.port;
     debug('Listening on ' + bind);
-    console.log('Listening on ' + bind);
+    console.log('Listening on ' + bind + ' in ' + process.env.NODE_ENV + ' mode');
 }
