@@ -5,7 +5,9 @@
   "scripts": {
     "start": "nodemon ./dist/bin/www",
     "tsc": "npx tsc -w",
-    "tsc-start": "npx tsc-watch --onSuccess \"node ./dist/bin/www\""
+    "build:assets": "cpx \"public/**/*\" dist/public && cpx \"src/views/**/*\" dist/views",
+    "watch:assets": "concurrently \"cpx \"public/**/*\" dist/public --watch\" \"cpx \"scr/views/**/*\" dist/views --watch\"",
+    "tsc-start": "npm run build:assets && concurrently \"npm run watch:assets\" \"npx tsc-watch --onSuccess \\\"node ./dist/bin/www\\\"\""
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -34,6 +36,8 @@
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/morgan": "^1.9.9",
+    "concurrently": "^10.0.3",
+    "cpx2": "^9.0.0",
     "nodemon": "^3.1.7",
     "typescript": "^5.7.2"
   }
