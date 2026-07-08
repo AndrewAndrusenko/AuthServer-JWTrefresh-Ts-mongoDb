@@ -1,12 +1,12 @@
 {
-  "name": "server-mongodb-rest-http",
+  "name": "Auth-Server_Backend",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./dist/bin/www",
+    "start": "nodemon ./dist/bin/auth-server",
     "tsc": "npx tsc -w",
     "build:assets": "cpx \"public/**/*\" dist/public && cpx \"src/views/**/*\" dist/views",
-    "watch:assets": "concurrently \"cpx \"public/**/*\" dist/public --watch\" \"cpx \"scr/views/**/*\" dist/views --watch\"",
+    "watch:assets": "concurrently \"cpx \"public/**/*\" dist/public --watch\" \"cpx \"src/views/**/*\" dist/views --watch\"",
     "tsc-start": "npm run build:assets && concurrently \"npm run watch:assets\" \"npx tsc-watch --onSuccess \\\"node ./dist/bin/www\\\"\""
   },
   "dependencies": {
