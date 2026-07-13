@@ -46,3 +46,8 @@ Loggings events & admin user list/delete
 18/02/25
 - auth-module - fixed email confirmation logging (incorrect path for id property)
 - mongodb-module.ts - fixed user profile update
+
+13/07/26
+1. Created route getUserData to retrieve jwt payload based on httponly cookie. It is necessary for apps authenticated via the server
+2. Function verifyJWT has been updated to pass down jwt payload via user property of request object  
+3. Route module quote has been removed as a legacy

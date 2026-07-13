@@ -70,6 +70,10 @@ export function signUpNewUser (req:Request, res:Response, next:NextFunction) {
     localLogger.info({fn:'signUpNewUser',msg:'success',user:newUser.userId})
   })
 }
+export function getUserData (req:Request, res:Response) {
+  let userData = (req as any)?.user||{}
+  res.send(userData);
+}
 export function updateUserData (req:Request, res:Response, next:NextFunction) {
   let newUser = req.body as IUser;
   from(mongoClient.isDBConnected()).pipe( 

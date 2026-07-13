@@ -1,5 +1,5 @@
 import { ENVIRONMENT } from "../environment/environment"
-import { sign, verify} from 'jsonwebtoken'
+import { JwtPayload, sign, verify} from 'jsonwebtoken'
 import { bindNodeCallback, catchError, EMPTY, forkJoin, from, Observable, of,switchMap, tap, throwError } from "rxjs"
 import { IJWTInfo, IJWTPayload, IJWTInfoToken, serializeOptions, IRefreshDelete } from "../types/shared-models"
 import { NextFunction, Request, Response } from "express"
@@ -57,15 +57,15 @@ export function jwtSetAccessToken (jwtInfo: IJWTInfo ):Observable<Omit<IJWTInfoT
 }
 
 export function verifyAccess (req:Request, res:Response, next:NextFunction ) {
-  verifyJWT(String(JSONCookies(req.cookies)['A3_AccessToken']),res,next,req.originalUrl)
+  verifyJWT(String(JSONCookies(req.cookies)['A3_AccessToken']),res,req, next)
 }
-function verifyJWT (accessToken:string, res:Response,next:NextFunction,url:string ) {
+function verifyJWT (accessToken:string, res:Response,req:Request, next:NextFunction) {
   const boundJwtVerify = bindNodeCallback (verify)
   let jwtVerify$ = boundJwtVerify(accessToken,ENVIRONMENT.JWT.JWT_SECRET)
   jwtVerify$.pipe(
     tap(decoded=>{
-      if (!ACCESS_ROUTES_ROLES.find(el=>el.route===url)?.roles.includes((decoded as IJWTPayload).role)) {
-        localLogger.info({fn:'verifyJWT',user:(decoded as IJWTPayload).userId,route:url,msg:'Access is forbidden'})
+      if (!ACCESS_ROUTES_ROLES.find(el=>el.route===req.originalUrl)?.roles.includes((decoded as IJWTPayload).role)) {
+        localLogger.info({fn:'verifyJWT',user:(decoded as IJWTPayload).userId,route:req.originalUrl,msg:'Access is forbidden'})
         res.status(403).send({ml:'JWT',msg:'Access is forbidden'});
         let e = {...(new Error()), name : 'AccessForbiden'}
         throw e
@@ -86,7 +86,10 @@ function verifyJWT (accessToken:string, res:Response,next:NextFunction,url:strin
       }
       return EMPTY;
     })
-  ).subscribe(()=>next())
+  ).subscribe((userData)=>{
+    (req as any).user = userData as JwtPayload
+    next()
+  })
 }
 
 export function refreshTokenFn (req:Request, res:Response ) {

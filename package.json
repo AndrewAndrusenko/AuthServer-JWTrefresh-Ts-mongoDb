@@ -7,7 +7,7 @@
     "tsc": "npx tsc -w",
     "build:assets": "cpx \"public/**/*\" dist/public && cpx \"src/views/**/*\" dist/views",
     "watch:assets": "concurrently \"cpx \"public/**/*\" dist/public --watch\" \"cpx \"src/views/**/*\" dist/views --watch\"",
-    "tsc-start": "npm run build:assets && concurrently \"npm run watch:assets\" \"npx tsc-watch --onSuccess \\\"node ./dist/bin/www\\\"\""
+    "tsc-start": "npm run build:assets && concurrently \"npm run watch:assets\" \"npx tsc-watch --onSuccess \\\"node ./dist/bin/auth-server\\\"\""
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.2",

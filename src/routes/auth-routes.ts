@@ -1,6 +1,6 @@
 import { Router} from "express";
 import * as authModule from "../modules/auth-module";
-import {refreshTokenFn} from "../modules/jwt-module";
+import {refreshTokenFn, verifyAccess} from "../modules/jwt-module";
 
 export const router = Router();
 
@@ -15,9 +15,13 @@ router.post('/logout', async function(req, res, next) {
 /* Sigh up new user. */
 router.post('/', async function(req, res, next) {
   authModule.signUpNewUser(req,res,next)
-
 });
+/* Tocken refresh. */
 router.get('/refresh',refreshTokenFn);
+
+router.get('/userData',verifyAccess, async function(req, res) {
+  authModule.getUserData(req, res)
+});
 /* Update user data. */
 router.post('/update', async function(req, res, next) {
   authModule.updateUserData(req, res, next)

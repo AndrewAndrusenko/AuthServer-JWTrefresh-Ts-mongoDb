@@ -9,7 +9,6 @@ import {pino} from "pino";
 import * as indexRouter from './routes/index';
 import * as usersRouter from './routes/auth-routes'
 import * as mailRouter from './routes/mail-routes'
-import { router as quoteRouter }  from './routes/rtq-routtes'
 import { router as adminRouter }  from './routes/admin-routtes'
 import { ENVIRONMENT } from './environment/environment';
 
@@ -39,7 +38,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter.router);
 app.use('/users', usersRouter.router);
 app.use('/mail',mailRouter.router);
-app.use('/quote',quoteRouter);
 app.use('/admin',adminRouter);
 
 // catch 404 and forward to error handler
